@@ -11,18 +11,18 @@ public class Organization {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @Column(name="name")
+    @Column(name="name", nullable = false)
     private String name;
-    @Column(name="physical_adress")
+    @Column(name="physical_adress", nullable = false)
     private String physicalAdress;
-    @Column(name="legalAddress")
+    @Column(name="legalAddress", nullable = false)
     private String legalAddress;
 
     @OneToOne(fetch = FetchType.EAGER , cascade=CascadeType.ALL )
     @JoinColumn(name = "supervisor_id")
     private Employee supervisor;
 
-    @OneToMany(mappedBy = "organization", cascade=CascadeType.ALL)
+    @OneToMany(mappedBy = "organization", cascade=CascadeType.MERGE)
     private List<Subdivision> subdivisions;
 
     public Organization() {

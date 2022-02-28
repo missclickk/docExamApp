@@ -9,20 +9,20 @@ public class Subdivision {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @Column(name="name")
+    @Column(name="name", nullable = false)
     private String name;
-    @Column(name="contact_data")
+    @Column(name="contact_data", nullable = false)
     private String contactData;
 
     @ManyToOne
     @JoinColumn(name = "org_id")
     private Organization organization;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
     @JoinColumn(name = "supervisor_id")
     private Employee supervisor;
 
-    @OneToMany(mappedBy = "subdivision")
+    @OneToMany(mappedBy = "subdivision", cascade=CascadeType.ALL)
     private List<Employee> employees;
 
     public Subdivision() {
@@ -59,5 +59,29 @@ public class Subdivision {
 
     public List<Employee> getEmployees() {
         return employees;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setContactData(String contactData) {
+        this.contactData = contactData;
+    }
+
+    public void setOrganization(Organization organization) {
+        this.organization = organization;
+    }
+
+    public void setSupervisor(Employee supervisor) {
+        this.supervisor = supervisor;
+    }
+
+    public void setEmployees(List<Employee> employees) {
+        this.employees = employees;
     }
 }

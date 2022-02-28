@@ -9,24 +9,49 @@ public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @Column(name = "first_name")
+    @Column(name = "first_name", nullable = false)
     private String firstName;
-    @Column(name = "lsat_name")
+    @Column(name = "lsat_name", nullable = false)
     private String lastName;
-    @Column(name = "position")
-    private String position;
+    @Column(name = "patronymic")
+    private String patronymic;
 
-    @ManyToOne
+    @ManyToOne( fetch = FetchType.LAZY)
+    @JoinColumn(name = "position_id")
+    private Position position;
+
+    @ManyToOne(cascade=CascadeType.MERGE)
     @JoinColumn(name = "subdivision_id")
     private Subdivision subdivision;
 
-    @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.PERSIST)
+    @ManyToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
     @JoinTable(
             name = "employees_assigments",
             joinColumns = {@JoinColumn(name = "employee_id")},
             inverseJoinColumns = {@JoinColumn(name = "assigment_id" )}
     )
     private List<Assignment> assignmentList;
+
+    public Employee(Long id, String firstName, String lastName, String patronymic, Position position, Subdivision subdivision, List<Assignment> assignmentList) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.patronymic = patronymic;
+        this.position = position;
+        this.subdivision = subdivision;
+        this.assignmentList = assignmentList;
+    }
+
+    public Employee() {
+    }
+
+    public String getPatronymic() {
+        return patronymic;
+    }
+
+    public void setPatronymic(String patronymic) {
+        this.patronymic = patronymic;
+    }
 
     public Long getId() {
         return id;
@@ -52,11 +77,11 @@ public class Employee {
         this.lastName = lastName;
     }
 
-    public String getPosition() {
+    public Position getPosition() {
         return position;
     }
 
-    public void setPosition(String position) {
+    public void setPosition(Position position) {
         this.position = position;
     }
 
